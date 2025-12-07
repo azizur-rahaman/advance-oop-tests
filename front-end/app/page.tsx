@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import NextImage from 'next/image';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, FileText, MessageSquare, CheckSquare, FolderOpen, Image } from 'lucide-react';
+import { Users, FileText, MessageSquare, CheckSquare, FolderOpen, Image as ImageIcon } from 'lucide-react';
 import { userRepository } from '@/features/users/data/user.repository';
 import { postRepository } from '@/features/posts/data/post.repository';
 import { commentRepository } from '@/features/comments/data/comment.repository';
@@ -13,12 +15,12 @@ import { photoRepository } from '@/features/photos/data/photo.repository';
 
 export default function Home() {
   const [stats, setStats] = useState([
-    { name: 'Users', icon: Users, count: '0', color: 'bg-blue-500' },
-    { name: 'Posts', icon: FileText, count: '0', color: 'bg-green-500' },
-    { name: 'Comments', icon: MessageSquare, count: '0', color: 'bg-purple-500' },
-    { name: 'Todos', icon: CheckSquare, count: '0', color: 'bg-yellow-500' },
-    { name: 'Albums', icon: FolderOpen, count: '0', color: 'bg-pink-500' },
-    { name: 'Photos', icon: Image, count: '0', color: 'bg-indigo-500' },
+    { name: 'Users', icon: Users, count: '0', color: 'bg-blue-500', path: '/users' },
+    { name: 'Posts', icon: FileText, count: '0', color: 'bg-green-500', path: '/posts' },
+    { name: 'Comments', icon: MessageSquare, count: '0', color: 'bg-purple-500', path: '/comments' },
+    { name: 'Todos', icon: CheckSquare, count: '0', color: 'bg-yellow-500', path: '/todos' },
+    { name: 'Albums', icon: FolderOpen, count: '0', color: 'bg-pink-500', path: '/albums' },
+    { name: 'Photos', icon: ImageIcon, count: '0', color: 'bg-indigo-500', path: '/photos' },
   ]);
   const [loading, setLoading] = useState(true);
 
@@ -36,12 +38,12 @@ export default function Home() {
         ]);
 
         setStats([
-          { name: 'Users', icon: Users, count: users.length.toString(), color: 'bg-blue-500' },
-          { name: 'Posts', icon: FileText, count: posts.length.toString(), color: 'bg-green-500' },
-          { name: 'Comments', icon: MessageSquare, count: comments.length.toString(), color: 'bg-purple-500' },
-          { name: 'Todos', icon: CheckSquare, count: todos.length.toString(), color: 'bg-yellow-500' },
-          { name: 'Albums', icon: FolderOpen, count: albums.length.toString(), color: 'bg-pink-500' },
-          { name: 'Photos', icon: Image, count: photos.length.toString(), color: 'bg-indigo-500' },
+          { name: 'Users', icon: Users, count: users.length.toString(), color: 'bg-blue-500', path: '/users' },
+          { name: 'Posts', icon: FileText, count: posts.length.toString(), color: 'bg-green-500', path: '/posts' },
+          { name: 'Comments', icon: MessageSquare, count: comments.length.toString(), color: 'bg-purple-500', path: '/comments' },
+          { name: 'Todos', icon: CheckSquare, count: todos.length.toString(), color: 'bg-yellow-500', path: '/todos' },
+          { name: 'Albums', icon: FolderOpen, count: albums.length.toString(), color: 'bg-pink-500', path: '/albums' },
+          { name: 'Photos', icon: ImageIcon, count: photos.length.toString(), color: 'bg-indigo-500', path: '/photos' },
         ]);
       } catch (error) {
         console.error('Failed to fetch stats:', error);
@@ -65,22 +67,24 @@ export default function Home() {
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.name}>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-slate-600">
-                    {stat.name}
-                  </CardTitle>
-                  <div className={`${stat.color} p-2 rounded-lg`}>
-                    <Icon className="h-5 w-5 text-white" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-slate-900">
-                    {loading ? '...' : stat.count}
-                  </div>
-                  <p className="text-xs text-slate-500 mt-1">Total {stat.name.toLowerCase()}</p>
-                </CardContent>
-              </Card>
+              <Link key={stat.name} href={stat.path}>
+                <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-medium text-slate-600">
+                      {stat.name}
+                    </CardTitle>
+                    <div className={`${stat.color} p-2 rounded-lg`}>
+                      <Icon className="h-5 w-5 text-white" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-slate-900">
+                      {loading ? '...' : stat.count}
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">Total {stat.name.toLowerCase()}</p>
+                  </CardContent>
+                </Card>
+              </Link>
             );
           })}
         </div>
@@ -104,7 +108,7 @@ export function OldHome() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
+        <NextImage
           className="dark:invert"
           src="/next.svg"
           alt="Next.js logo"
@@ -132,7 +136,7 @@ export function OldHome() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
+            <NextImage
               className="dark:invert"
               src="/vercel.svg"
               alt="Vercel logomark"
@@ -158,7 +162,7 @@ export function OldHome() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
+          <NextImage
             aria-hidden
             src="/file.svg"
             alt="File icon"
@@ -173,7 +177,7 @@ export function OldHome() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
+          <NextImage
             aria-hidden
             src="/window.svg"
             alt="Window icon"
@@ -188,7 +192,7 @@ export function OldHome() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
+          <NextImage
             aria-hidden
             src="/globe.svg"
             alt="Globe icon"
