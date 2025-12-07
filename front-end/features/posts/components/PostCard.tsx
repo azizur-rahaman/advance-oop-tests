@@ -26,7 +26,7 @@ export function PostCard({ post, onEdit, onDelete, onClick }: PostCardProps) {
           <CardTitle className="text-lg cursor-pointer hover:text-blue-600" onClick={onClick}>
             {post.title}
           </CardTitle>
-          <p className="text-xs text-slate-500">User ID: {post.user.id}</p>
+          <p className="text-xs text-slate-500">User ID: {post.user?.id || 'N/A'}</p>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-slate-600 line-clamp-3">{post.body}</p>
@@ -84,7 +84,7 @@ export function PostForm({ post, userId, onSubmit, onCancel }: PostFormProps) {
   const [formData, setFormData] = useState({
     title: post?.title || '',
     body: post?.body || '',
-    userId: post?.user.id || userId || 1,
+    userId: post?.user?.id || userId || 1,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
