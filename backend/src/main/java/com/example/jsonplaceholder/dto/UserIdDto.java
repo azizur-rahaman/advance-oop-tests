@@ -1,0 +1,19 @@
+package com.example.jsonplaceholder.dto;
+
+public class UserIdDto {
+    private Integer id;
+    
+    public UserIdDto() {}
+    
+    public UserIdDto(Integer id) {
+        this.id = id;
+    }
+    
+    public Integer getId() {
+        return id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+}

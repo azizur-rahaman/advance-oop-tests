@@ -1,0 +1,283 @@
+{
+  "info": {
+    "name": "JSONPlaceholder API Clone",
+    "description": "Complete REST API for JSONPlaceholder clone",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"username\": \"johndoe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"123-456-7890\",\n  \"website\": \"johndoe.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Update User (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Smith\",\n  \"username\": \"johnsmith\",\n  \"email\": \"johnsmith@example.com\",\n  \"phone\": \"098-765-4321\",\n  \"website\": \"johnsmith.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update User (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newemail@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Get All Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts",
+              "host": ["{{base_url}}"],
+              "path": ["posts"]
+            }
+          }
+        },
+        {
+          "name": "Get Posts by User ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts?userId=1",
+              "host": ["{{base_url}}"],
+              "path": ["posts"],
+              "query": [{"key": "userId", "value": "1"}]
+            }
+          }
+        },
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": {\"id\": 1},\n  \"title\": \"My First Post\",\n  \"body\": \"This is the content of my first post.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/posts",
+              "host": ["{{base_url}}"],
+              "path": ["posts"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Get All Comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/comments",
+              "host": ["{{base_url}}"],
+              "path": ["comments"]
+            }
+          }
+        },
+        {
+          "name": "Create Comment",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"post\": {\"id\": 1},\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"body\": \"Great post!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/comments",
+              "host": ["{{base_url}}"],
+              "path": ["comments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Todos",
+      "item": [
+        {
+          "name": "Get All Todos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todos",
+              "host": ["{{base_url}}"],
+              "path": ["todos"]
+            }
+          }
+        },
+        {
+          "name": "Create Todo",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": {\"id\": 1},\n  \"title\": \"Complete documentation\",\n  \"completed\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/todos",
+              "host": ["{{base_url}}"],
+              "path": ["todos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Albums",
+      "item": [
+        {
+          "name": "Get All Albums",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/albums",
+              "host": ["{{base_url}}"],
+              "path": ["albums"]
+            }
+          }
+        },
+        {
+          "name": "Create Album",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": {\"id\": 1},\n  \"title\": \"My Photo Album\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/albums",
+              "host": ["{{base_url}}"],
+              "path": ["albums"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Photos",
+      "item": [
+        {
+          "name": "Get All Photos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/photos",
+              "host": ["{{base_url}}"],
+              "path": ["photos"]
+            }
+          }
+        },
+        {
+          "name": "Create Photo",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"album\": {\"id\": 1},\n  \"title\": \"Sunset Photo\",\n  \"url\": \"https://example.com/photos/sunset.jpg\",\n  \"thumbnailUrl\": \"https://example.com/photos/thumbs/sunset.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/photos",
+              "host": ["{{base_url}}"],
+              "path": ["photos"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
