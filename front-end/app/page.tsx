@@ -1,18 +1,57 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, FileText, MessageSquare, CheckSquare, FolderOpen, Image } from 'lucide-react';
+import { userRepository } from '@/features/users/data/user.repository';
+import { postRepository } from '@/features/posts/data/post.repository';
+import { commentRepository } from '@/features/comments/data/comment.repository';
+import { todoRepository } from '@/features/todos/data/todo.repository';
+import { albumRepository } from '@/features/albums/data/album.repository';
+import { photoRepository } from '@/features/photos/data/photo.repository';
 
 export default function Home() {
-  const stats = [
+  const [stats, setStats] = useState([
     { name: 'Users', icon: Users, count: '0', color: 'bg-blue-500' },
     { name: 'Posts', icon: FileText, count: '0', color: 'bg-green-500' },
     { name: 'Comments', icon: MessageSquare, count: '0', color: 'bg-purple-500' },
     { name: 'Todos', icon: CheckSquare, count: '0', color: 'bg-yellow-500' },
     { name: 'Albums', icon: FolderOpen, count: '0', color: 'bg-pink-500' },
     { name: 'Photos', icon: Image, count: '0', color: 'bg-indigo-500' },
-  ];
+  ]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        const [users, posts, comments, todos, albums, photos] = await Promise.all([
+          userRepository.getAll(),
+          postRepository.getAll(),
+          commentRepository.getAll(),
+          todoRepository.getAll(),
+          albumRepository.getAll(),
+          photoRepository.getAll(),
+        ]);
+
+        setStats([
+          { name: 'Users', icon: Users, count: users.length.toString(), color: 'bg-blue-500' },
+          { name: 'Posts', icon: FileText, count: posts.length.toString(), color: 'bg-green-500' },
+          { name: 'Comments', icon: MessageSquare, count: comments.length.toString(), color: 'bg-purple-500' },
+          { name: 'Todos', icon: CheckSquare, count: todos.length.toString(), color: 'bg-yellow-500' },
+          { name: 'Albums', icon: FolderOpen, count: albums.length.toString(), color: 'bg-pink-500' },
+          { name: 'Photos', icon: Image, count: photos.length.toString(), color: 'bg-indigo-500' },
+        ]);
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -36,7 +75,9 @@ export default function Home() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-slate-900">{stat.count}</div>
+                  <div className="text-3xl font-bold text-slate-900">
+                    {loading ? '...' : stat.count}
+                  </div>
                   <p className="text-xs text-slate-500 mt-1">Total {stat.name.toLowerCase()}</p>
                 </CardContent>
               </Card>
