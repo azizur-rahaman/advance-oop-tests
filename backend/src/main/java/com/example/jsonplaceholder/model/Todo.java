@@ -1,6 +1,6 @@
 package com.example.jsonplaceholder.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 
