@@ -1,12 +1,20 @@
 package com.example.jsonplaceholder.controller;
 
+import com.example.jsonplaceholder.dto.CreateAlbumDto;
+import com.example.jsonplaceholder.dto.UpdateAlbumDto;
+import com.example.jsonplaceholder.dto.AlbumResponseDto;
+import com.example.jsonplaceholder.mapper.DtoMapper;
 import com.example.jsonplaceholder.model.Album;
+import com.example.jsonplaceholder.model.User;
 import com.example.jsonplaceholder.service.AlbumService;
+import com.example.jsonplaceholder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/albums")
@@ -16,32 +24,48 @@ public class AlbumController {
     @Autowired
     private AlbumService albumService;
     
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private DtoMapper dtoMapper;
+    
     // GET all albums
     @GetMapping
-    public ResponseEntity<List<Album>> getAllAlbums(@RequestParam(required = false) Integer userId) {
+    public ResponseEntity<List<AlbumResponseDto>> getAllAlbums(@RequestParam(required = false) Integer userId) {
         List<Album> albums;
         if (userId != null) {
             albums = albumService.getAlbumsByUserId(userId);
         } else {
             albums = albumService.getAllAlbums();
         }
-        return new ResponseEntity<>(albums, HttpStatus.OK);
+        List<AlbumResponseDto> albumDtos = albums.stream()
+            .map(dtoMapper::toAlbumResponseDto)
+            .collect(Collectors.toList());
+        return new ResponseEntity<>(albumDtos, HttpStatus.OK);
     }
     
     // GET album by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Album> getAlbumById(@PathVariable Integer id) {
+    public ResponseEntity<AlbumResponseDto> getAlbumById(@PathVariable Integer id) {
         return albumService.getAlbumById(id)
-            .map(album -> new ResponseEntity<>(album, HttpStatus.OK))
+            .map(album -> new ResponseEntity<>(dtoMapper.toAlbumResponseDto(album), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     
     // POST - Create new album
     @PostMapping
-    public ResponseEntity<Album> createAlbum(@RequestBody Album album) {
+    public ResponseEntity<AlbumResponseDto> createAlbum(@Valid @RequestBody CreateAlbumDto createAlbumDto) {
         try {
+            User user = userService.getUserById(createAlbumDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+            
+            Album album = new Album();
+            album.setUser(user);
+            album.setTitle(createAlbumDto.getTitle());
+            
             Album createdAlbum = albumService.createAlbum(album);
-            return new ResponseEntity<>(createdAlbum, HttpStatus.CREATED);
+            return new ResponseEntity<>(dtoMapper.toAlbumResponseDto(createdAlbum), HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -49,10 +73,15 @@ public class AlbumController {
     
     // PUT - Update entire album
     @PutMapping("/{id}")
-    public ResponseEntity<Album> updateAlbum(@PathVariable Integer id, @RequestBody Album album) {
+    public ResponseEntity<AlbumResponseDto> updateAlbum(@PathVariable Integer id, @Valid @RequestBody UpdateAlbumDto updateAlbumDto) {
         try {
-            Album updatedAlbum = albumService.updateAlbum(id, album);
-            return new ResponseEntity<>(updatedAlbum, HttpStatus.OK);
+            Album existingAlbum = albumService.getAlbumById(id)
+                .orElseThrow(() -> new RuntimeException("Album not found"));
+            
+            existingAlbum.setTitle(updateAlbumDto.getTitle());
+            
+            Album updatedAlbum = albumService.updateAlbum(id, existingAlbum);
+            return new ResponseEntity<>(dtoMapper.toAlbumResponseDto(updatedAlbum), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -60,10 +89,14 @@ public class AlbumController {
     
     // PATCH - Partially update album
     @PatchMapping("/{id}")
-    public ResponseEntity<Album> patchAlbum(@PathVariable Integer id, @RequestBody Album album) {
+    public ResponseEntity<AlbumResponseDto> patchAlbum(@PathVariable Integer id, @RequestBody UpdateAlbumDto updateAlbumDto) {
         try {
-            Album patchedAlbum = albumService.patchAlbum(id, album);
-            return new ResponseEntity<>(patchedAlbum, HttpStatus.OK);
+            Album existingAlbum = albumService.getAlbumById(id)
+                .orElseThrow(() -> new RuntimeException("Album not found"));
+            
+            dtoMapper.updateAlbumFromDto(existingAlbum, updateAlbumDto);
+            Album patchedAlbum = albumService.patchAlbum(id, existingAlbum);
+            return new ResponseEntity<>(dtoMapper.toAlbumResponseDto(patchedAlbum), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
