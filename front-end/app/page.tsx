@@ -1,6 +1,65 @@
-import Image from "next/image";
+'use client';
+
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Users, FileText, MessageSquare, CheckSquare, FolderOpen, Image } from 'lucide-react';
 
 export default function Home() {
+  const stats = [
+    { name: 'Users', icon: Users, count: '0', color: 'bg-blue-500' },
+    { name: 'Posts', icon: FileText, count: '0', color: 'bg-green-500' },
+    { name: 'Comments', icon: MessageSquare, count: '0', color: 'bg-purple-500' },
+    { name: 'Todos', icon: CheckSquare, count: '0', color: 'bg-yellow-500' },
+    { name: 'Albums', icon: FolderOpen, count: '0', color: 'bg-pink-500' },
+    { name: 'Photos', icon: Image, count: '0', color: 'bg-indigo-500' },
+  ];
+
+  return (
+    <DashboardLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
+          <p className="text-slate-500 mt-1">Overview of your resources</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <Card key={stat.name}>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-slate-600">
+                    {stat.name}
+                  </CardTitle>
+                  <div className={`${stat.color} p-2 rounded-lg`}>
+                    <Icon className="h-5 w-5 text-white" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-slate-900">{stat.count}</div>
+                  <p className="text-xs text-slate-500 mt-1">Total {stat.name.toLowerCase()}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-slate-600">
+              Use the sidebar navigation to manage users, posts, comments, todos, albums, and photos.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </DashboardLayout>
+  );
+}
+
+export function OldHome() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
