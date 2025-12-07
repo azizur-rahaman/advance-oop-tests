@@ -31,7 +31,7 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
           <p className={`text-sm ${todo.completed ? 'line-through text-slate-500' : 'text-slate-900'}`}>
             {todo.title}
           </p>
-          <p className="text-xs text-slate-400 mt-1">User ID: {todo.user.id}</p>
+          <p className="text-xs text-slate-400 mt-1">User ID: {todo.user?.id || 'N/A'}</p>
         </div>
 
         <Badge variant={todo.completed ? 'success' : 'default'}>

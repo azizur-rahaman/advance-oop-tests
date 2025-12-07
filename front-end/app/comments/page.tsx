@@ -61,7 +61,7 @@ export default function CommentsPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-slate-600">{comment.body}</p>
-                <p className="text-xs text-slate-400 mt-2">Post ID: {comment.post.id}</p>
+                <p className="text-xs text-slate-400 mt-2">Post ID: {comment.post?.id || 'N/A'}</p>
               </CardContent>
             </Card>
           ))}

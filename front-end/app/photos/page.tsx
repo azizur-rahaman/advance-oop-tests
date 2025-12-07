@@ -51,7 +51,7 @@ export default function PhotosPage() {
               <CardFooter className="flex-col items-start p-3 gap-2">
                 <p className="text-sm font-medium text-slate-900 line-clamp-2">{photo.title}</p>
                 <div className="flex items-center justify-between w-full">
-                  <p className="text-xs text-slate-500">Album: {photo.album.id}</p>
+                  <p className="text-xs text-slate-500">Album: {photo.album?.id || 'N/A'}</p>
                   <Button variant="danger" size="sm" onClick={() => handleDelete(photo.id)}>
                     <Trash2 className="h-3 w-3" />
                   </Button>

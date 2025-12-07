@@ -48,7 +48,7 @@ export default function AlbumsPage() {
                   </div>
                   <div className="flex-1">
                     <CardTitle className="text-lg">{album.title}</CardTitle>
-                    <p className="text-xs text-slate-500 mt-1">User ID: {album.user.id}</p>
+                    <p className="text-xs text-slate-500 mt-1">User ID: {album.user?.id || 'N/A'}</p>
                   </div>
                 </div>
               </CardHeader>
