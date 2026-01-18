@@ -1,0 +1,7 @@
+com/example/aopassignment/repository/GadgetRepository.class
+com/example/aopassignment/controller/GadgetController.class
+com/example/aopassignment/model/Gadget.class
+com/example/aopassignment/model/Gadget$GadgetStatus.class
+com/example/aopassignment/model/Gadget$GadgetType.class
+com/example/aopassignment/AopAssignmentApplication.class
+com/example/aopassignment/service/GadgetService.class
